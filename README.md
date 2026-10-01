@@ -29,3 +29,12 @@ docker compose -f docker/docker-compose.yml down
 ```
 
 For non-local deployments, replace the example `SECRET_KEY` and database password with securely managed values.
+
+## Run Jenkins CI
+Start the Jenkins controller and its isolated Docker builder from the repository root:
+
+```powershell
+docker compose -f docker/jenkins/docker-compose.yml up --build -d
+```
+
+Open http://localhost:8080. The initial administrator password is available inside the Jenkins container at `/var/jenkins_home/secrets/initialAdminPassword`. Create a Pipeline job from this repository and use the root `Jenkinsfile`; the pipeline installs app requirements in a workspace virtual environment, runs focused Flake8 and pytest/JUnit checks, builds the application image, and archives test reports. Configure the GitHub webhook to target `/github-webhook/` on a Jenkins URL reachable by GitHub to enable push triggers.

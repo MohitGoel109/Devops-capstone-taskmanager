@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
-{% block title %}Register | Task Manager{% endblock %}
+{% block title %}Join the Ranks | Ronin Task Board{% endblock %}
 {% block content %}
 <div class="auth-layout">
   <section class="card auth-card">
     <div class="card-body">
       <div class="auth-icon auth-icon-warm"><i class="bi bi-person-plus" aria-hidden="true"></i></div>
-      <p class="eyebrow">A FRESH START</p>
-      <h1 class="auth-title">Create your account</h1>
-      <p class="auth-intro">A little more focus starts here.</p>
+      <p class="eyebrow">A VOW TO BEGIN</p>
+      <div class="auth-title-row">
+        <h1 class="auth-title">Join the Ranks</h1>
+        <span class="hanko-stamp" aria-hidden="true">誓</span>
+      </div>
+      <p class="auth-intro">Take your first step toward a more focused day.</p>
       {% if error %}
       <div class="alert alert-danger auth-error" role="alert">
         <i class="bi bi-exclamation-circle me-2" aria-hidden="true"></i>{{ error }}
@@ -17,8 +20,8 @@
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <div class="input-icon-wrap">
-            <i class="bi bi-person" aria-hidden="true"></i>
-            <input type="text" class="form-control{% if error %} is-invalid{% endif %}" name="username" id="username" autocomplete="username" placeholder="Choose a username" required aria-invalid="{{ 'true' if error else 'false' }}">
+            <i class="bi bi-person-badge" aria-hidden="true"></i>
+            <input type="text" class="form-control{% if error %} is-invalid{% endif %}" name="username" id="username" autocomplete="username" placeholder="Choose your username" required aria-invalid="{{ 'true' if error else 'false' }}">
           </div>
         </div>
         <div class="mb-4">
@@ -29,7 +32,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary w-100 auth-submit">
-          <i class="bi bi-person-check me-2" aria-hidden="true"></i>Create account
+          <i class="bi bi-person-check me-2" aria-hidden="true"></i>Join the board
         </button>
       </form>
       <p class="auth-switch mb-0">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>

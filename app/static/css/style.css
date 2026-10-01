@@ -401,6 +401,45 @@ body.app-theme > footer {
   color: var(--fog);
 }
 
+.app-theme .auth-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.app-theme .auth-title-row .auth-title {
+  margin: 0;
+  font-size: 1.7rem;
+}
+
+.app-theme .auth-title-row .hanko-stamp {
+  margin-bottom: 0.5rem;
+}
+
+.app-theme .auth-error {
+  border: 1px solid rgba(179, 32, 42, 0.7);
+  border-radius: 4px;
+  color: var(--mist);
+  background: rgba(83, 24, 29, 0.92);
+}
+
+.app-theme .input-icon-wrap > i {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 0.95rem;
+  transform: translateY(-50%);
+}
+
+.app-theme .input-icon-wrap .form-control {
+  padding-left: 2.65rem;
+}
+
+.app-theme .auth-submit {
+  min-height: 48px;
+}
+
 .app-theme .auth-switch a {
   color: var(--gold);
 }
@@ -595,6 +634,10 @@ body.app-theme > footer {
 
   .app-theme .auth-title {
     font-size: 1.5rem;
+  }
+
+  .app-theme .auth-title-row .auth-title {
+    font-size: 1.42rem;
   }
 
   .app-theme .page-title {

@@ -480,6 +480,201 @@ body.app-theme > footer {
   font-size: 1.4rem;
 }
 
+.app-theme .tasks-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.app-theme .mission-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.app-theme .page-title {
+  margin: 0 0 0.55rem;
+  font-size: 2.2rem;
+}
+
+.app-theme .page-intro {
+  margin: 0;
+}
+
+.app-theme .task-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(94px, 1fr));
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.app-theme .add-task-card .card-body {
+  padding: 1.5rem;
+}
+
+.app-theme .add-task-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.app-theme .add-task-fields {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr auto;
+  align-items: end;
+  gap: 1rem;
+}
+
+.app-theme .add-task-fields .form-label {
+  margin-bottom: 0.45rem;
+}
+
+.app-theme .optional-label {
+  margin-left: 0.25rem;
+  color: var(--fog);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.app-theme .add-task-button {
+  min-height: 46px;
+  white-space: nowrap;
+}
+
+.app-theme .task-list-section {
+  margin-top: 2rem;
+}
+
+.app-theme .list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.app-theme .task-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.app-theme .task-card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem 1.35rem;
+}
+
+.app-theme .task-copy {
+  min-width: 0;
+}
+
+.app-theme .task-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.app-theme .task-title {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+}
+
+.app-theme .task-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.38rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.app-theme .task-description {
+  margin: 0.55rem 0 0.35rem;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.app-theme .task-date {
+  font-size: 0.74rem;
+}
+
+.app-theme .task-actions {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.app-theme .task-actions form,
+.app-theme .completion-form {
+  margin: 0;
+}
+
+.app-theme .completion-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.app-theme .completion-toggle .form-check-input {
+  float: none;
+  margin: 0;
+  cursor: pointer;
+}
+
+.app-theme .task-actions .btn {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.app-theme .task-edit {
+  position: relative;
+}
+
+.app-theme .task-edit summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.app-theme .task-edit summary::-webkit-details-marker {
+  display: none;
+}
+
+.app-theme .task-edit-form {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: min(340px, calc(100vw - 2rem));
+  padding: 1rem;
+}
+
+.app-theme .empty-state {
+  align-items: center;
+  padding: 2.75rem 1rem;
+  text-align: center;
+}
+
+.app-theme .empty-state h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+}
+
 .app-theme .task-card:hover {
   border-color: rgba(201, 162, 75, 0.72);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.48), 0 0 18px rgba(201, 162, 75, 0.06);
@@ -596,6 +791,19 @@ body.app-theme > footer {
     justify-content: start;
     padding-top: 0.85rem;
     border-top: 1px solid rgba(201, 162, 75, 0.18);
+  }
+
+  .app-theme .page-title {
+    font-size: 1.7rem;
+  }
+
+  .app-theme .add-task-card .card-body {
+    padding: 1.1rem;
+  }
+
+  .app-theme .task-edit-form {
+    right: auto;
+    left: 0;
   }
 }
 

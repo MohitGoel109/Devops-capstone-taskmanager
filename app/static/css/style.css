@@ -120,15 +120,15 @@ body.app-theme > footer {
 .falling-leaf {
   position: absolute;
   top: -7vh;
-  left: var(--leaf-left);
-  width: var(--leaf-size);
-  height: calc(var(--leaf-size) * 0.68);
+  left: var(--particle-left);
+  width: var(--particle-size);
+  height: calc(var(--particle-size) * 0.68);
   border-radius: 100% 0 100% 0;
   background: linear-gradient(135deg, #d34a4c, var(--crimson) 65%, #74141d);
   box-shadow: 0 0 9px rgba(179, 32, 42, 0.26);
   opacity: 0.72;
   transform: rotate(-32deg);
-  animation: leaf-fall var(--leaf-duration) linear var(--leaf-delay) infinite;
+  animation: leaf-fall var(--particle-duration) linear var(--particle-delay) infinite;
 }
 
 @keyframes mist-drift {
@@ -147,7 +147,7 @@ body.app-theme > footer {
   }
 
   to {
-    transform: translate3d(var(--leaf-drift), 115vh, 0) rotate(560deg);
+    transform: translate3d(var(--particle-drift), 115vh, 0) rotate(560deg);
   }
 }
 
@@ -159,6 +159,11 @@ body.app-theme > footer {
 
   .falling-leaf {
     animation: none;
+  }
+
+  .world-backdrop::before,
+  .world-backdrop::after {
+    animation: none !important;
   }
 }
 
@@ -321,6 +326,28 @@ body.app-theme > footer {
   border-radius: 80% 0 80% 0;
   background: linear-gradient(#c5d4a1, #718e62);
   box-shadow: 0 0 8px rgba(213, 226, 167, 0.3);
+  animation-name: pine-needle-fall;
+  animation-timing-function: ease-in-out;
+}
+
+.app-theme[data-theme="pine"] .falling-leaf.pine-needle {
+  animation-duration: var(--particle-duration);
+  animation-delay: var(--particle-delay);
+  animation-iteration-count: infinite;
+}
+
+@keyframes pine-needle-fall {
+  from {
+    transform: translate3d(-12px, -8vh, 0) rotate(-28deg);
+  }
+
+  50% {
+    transform: translate3d(18px, 54vh, 0) rotate(12deg);
+  }
+
+  to {
+    transform: translate3d(var(--particle-drift), 112vh, 0) rotate(48deg);
+  }
 }
 
 .app-theme[data-theme="steel"] {
@@ -385,6 +412,7 @@ body.app-theme > footer {
   border-radius: 50%;
   background: radial-gradient(circle at 36% 35%, #eef5f1 0%, #bac9cd 32%, #80949c 64%, rgba(104, 132, 143, 0.06) 72%);
   box-shadow: 0 0 65px rgba(180, 207, 211, 0.18), 0 0 150px rgba(91, 133, 146, 0.14);
+  animation: moon-breathe 11s ease-in-out infinite alternate;
   content: "";
 }
 
@@ -396,6 +424,7 @@ body.app-theme > footer {
   height: 20vh;
   background: repeating-linear-gradient(174deg, transparent 0 13px, rgba(168, 198, 204, 0.16) 14px 15px, transparent 17px 27px);
   mask-image: linear-gradient(transparent, #000 30%, #000 80%, transparent);
+  animation: water-shimmer 13s ease-in-out infinite alternate;
   content: "";
 }
 
@@ -473,6 +502,7 @@ body.app-theme > footer {
   left: 0;
   height: 28vh;
   background: radial-gradient(ellipse at 50% 100%, rgba(220, 108, 54, 0.22), transparent 66%);
+  animation: lantern-glow 8s ease-in-out infinite alternate;
   content: "";
 }
 
@@ -1824,5 +1854,43 @@ body {
   .app-footer .container {
     justify-content: center !important;
     text-align: center;
+  }
+}
+
+@keyframes moon-breathe {
+  from {
+    opacity: 0.76;
+    transform: scale(0.97);
+    box-shadow: 0 0 55px rgba(180, 207, 211, 0.12), 0 0 130px rgba(91, 133, 146, 0.1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.035);
+    box-shadow: 0 0 78px rgba(180, 207, 211, 0.25), 0 0 170px rgba(91, 133, 146, 0.2);
+  }
+}
+
+@keyframes water-shimmer {
+  from {
+    transform: translateX(-1.5%) scaleY(0.92);
+    opacity: 0.54;
+  }
+
+  to {
+    transform: translateX(1.5%) scaleY(1.08);
+    opacity: 0.95;
+  }
+}
+
+@keyframes lantern-glow {
+  from {
+    opacity: 0.22;
+    transform: scaleY(0.88);
+  }
+
+  to {
+    opacity: 0.72;
+    transform: scaleY(1.12);
   }
 }

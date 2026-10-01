@@ -237,21 +237,21 @@ body.app-theme > footer {
 
 .app-theme[data-theme="pine"] {
   color-scheme: light;
-  --ink: #17221a;
-  --mist: #29372d;
-  --crimson: #965043;
-  --gold: #98733a;
-  --slate: #cdd5c7;
-  --fog: #667468;
-  --muted: rgba(41, 55, 45, 0.76);
-  --green: #527457;
-  --green-dark: #3e6047;
-  --line: rgba(125, 106, 65, 0.44);
-  --surface: rgba(242, 238, 222, 0.93);
-  --shadow: 0 22px 54px rgba(46, 58, 43, 0.18);
+  --ink: #19251c;
+  --mist: #263629;
+  --crimson: #b66545;
+  --gold: #b19a58;
+  --slate: #52644f;
+  --fog: #748373;
+  --muted: rgba(34, 51, 38, 0.78);
+  --green: #4e765b;
+  --green-dark: #375b43;
+  --line: rgba(89, 113, 80, 0.42);
+  --surface: rgba(226, 231, 214, 0.91);
+  --shadow: 0 22px 54px rgba(30, 47, 34, 0.24);
   background:
-    radial-gradient(ellipse at 52% 0%, rgba(228, 222, 197, 0.88), transparent 44rem),
-    linear-gradient(155deg, #d9e0d1 0%, #aebba9 50%, #6d7d70 100%);
+    radial-gradient(ellipse at 18% 13%, rgba(241, 218, 163, 0.74), transparent 25rem),
+    linear-gradient(155deg, #b9c6a8 0%, #82957c 46%, #394f41 100%);
 }
 
 .app-theme[data-theme="pine"] .app-navbar,
@@ -286,6 +286,41 @@ body.app-theme > footer {
 
 .app-theme[data-theme="pine"] .mountain-range-near {
   background: linear-gradient(180deg, rgba(73, 94, 76, 0.55), rgba(37, 56, 44, 0.82));
+}
+
+.app-theme[data-theme="pine"] .world-backdrop::before {
+  position: absolute;
+  right: -3%;
+  bottom: 9vh;
+  left: -3%;
+  height: 48vh;
+  background: linear-gradient(180deg, rgba(83, 112, 78, 0.72), rgba(37, 62, 47, 0.92));
+  clip-path: polygon(0 100%, 0 54%, 4% 54%, 9% 19%, 14% 57%, 19% 57%, 25% 9%, 31% 58%, 36% 58%, 42% 23%, 48% 60%, 54% 60%, 60% 13%, 66% 59%, 72% 59%, 78% 20%, 84% 60%, 90% 60%, 95% 28%, 100% 62%, 100% 100%);
+  content: "";
+}
+
+.app-theme[data-theme="pine"] .world-backdrop::after {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 18% 15%, rgba(255, 231, 170, 0.26), transparent 31rem);
+  content: "";
+}
+
+.app-theme[data-theme="pine"] .mountain-range-far,
+.app-theme[data-theme="pine"] .mountain-range-near {
+  opacity: 0.28;
+}
+
+.app-theme[data-theme="pine"] .mist-layer {
+  opacity: 0.72;
+}
+
+.app-theme[data-theme="pine"] .pine-needle {
+  width: 3px;
+  height: 18px;
+  border-radius: 80% 0 80% 0;
+  background: linear-gradient(#c5d4a1, #718e62);
+  box-shadow: 0 0 8px rgba(213, 226, 167, 0.3);
 }
 
 .app-theme[data-theme="steel"] {
@@ -339,6 +374,151 @@ body.app-theme > footer {
 
 .app-theme[data-theme="steel"] .mountain-range-near {
   background: linear-gradient(180deg, rgba(36, 53, 61, 0.54), rgba(12, 19, 24, 0.84));
+}
+
+.app-theme[data-theme="steel"] .world-backdrop::before {
+  position: absolute;
+  top: 11%;
+  right: 14%;
+  width: clamp(110px, 17vw, 220px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 35%, #eef5f1 0%, #bac9cd 32%, #80949c 64%, rgba(104, 132, 143, 0.06) 72%);
+  box-shadow: 0 0 65px rgba(180, 207, 211, 0.18), 0 0 150px rgba(91, 133, 146, 0.14);
+  content: "";
+}
+
+.app-theme[data-theme="steel"] .world-backdrop::after {
+  position: absolute;
+  right: -5%;
+  bottom: 8%;
+  left: -5%;
+  height: 20vh;
+  background: repeating-linear-gradient(174deg, transparent 0 13px, rgba(168, 198, 204, 0.16) 14px 15px, transparent 17px 27px);
+  mask-image: linear-gradient(transparent, #000 30%, #000 80%, transparent);
+  content: "";
+}
+
+.app-theme[data-theme="steel"] .mountain-range-near {
+  clip-path: polygon(0 67%, 12% 56%, 21% 68%, 34% 47%, 46% 67%, 59% 52%, 71% 70%, 84% 45%, 93% 63%, 100% 55%, 100% 100%, 0 100%);
+}
+
+.app-theme[data-theme="steel"] .moon-star {
+  position: absolute;
+  top: var(--particle-top);
+  left: var(--particle-left);
+  width: var(--particle-size);
+  height: var(--particle-size);
+  border-radius: 50%;
+  background: #d9edf0;
+  box-shadow: 0 0 8px rgba(205, 235, 239, 0.86);
+  animation: star-glimmer var(--particle-duration) ease-in-out var(--particle-delay) infinite alternate;
+}
+
+.app-theme[data-theme="lantern"] {
+  --ink: #24140f;
+  --mist: #f2dfc3;
+  --crimson: #c34b34;
+  --gold: #e4b75e;
+  --slate: #4a2d26;
+  --fog: #b99a7d;
+  --muted: rgba(242, 223, 195, 0.72);
+  --green: #8b9a68;
+  --green-dark: #67774d;
+  --line: rgba(228, 183, 94, 0.42);
+  --surface: rgba(51, 31, 27, 0.91);
+  --shadow: 0 24px 60px rgba(13, 6, 5, 0.48);
+  background:
+    radial-gradient(ellipse at 50% 78%, rgba(196, 80, 48, 0.38), transparent 24rem),
+    linear-gradient(165deg, #452721 0%, #2b1918 50%, #130e11 100%);
+}
+
+.app-theme[data-theme="lantern"] .app-navbar,
+.app-theme[data-theme="lantern"] .app-footer {
+  border-color: rgba(228, 183, 94, 0.26);
+  background: rgba(31, 17, 16, 0.82);
+}
+
+.app-theme[data-theme="lantern"] .card {
+  border-color: rgba(228, 183, 94, 0.48);
+  background: var(--surface);
+}
+
+.app-theme[data-theme="lantern"] .form-control {
+  border-color: rgba(228, 183, 94, 0.32);
+  background: rgba(27, 15, 15, 0.72);
+}
+
+.app-theme[data-theme="lantern"] .world-backdrop::before {
+  position: absolute;
+  top: 28%;
+  left: calc(50% - 75px);
+  width: 150px;
+  height: 28vh;
+  min-height: 190px;
+  background:
+    linear-gradient(var(--crimson), var(--crimson)) center 12% / 100% 12px no-repeat,
+    linear-gradient(var(--crimson), var(--crimson)) center 27% / 78% 7px no-repeat,
+    linear-gradient(var(--crimson), var(--crimson)) 20% 58% / 10px 72% no-repeat,
+    linear-gradient(var(--crimson), var(--crimson)) 80% 58% / 10px 72% no-repeat;
+  filter: drop-shadow(0 0 18px rgba(220, 83, 48, 0.28));
+  opacity: 0.34;
+  content: "";
+}
+
+.app-theme[data-theme="lantern"] .world-backdrop::after {
+  position: absolute;
+  right: 0;
+  bottom: 10%;
+  left: 0;
+  height: 28vh;
+  background: radial-gradient(ellipse at 50% 100%, rgba(220, 108, 54, 0.22), transparent 66%);
+  content: "";
+}
+
+.app-theme[data-theme="lantern"] .mountain-range-far,
+.app-theme[data-theme="lantern"] .mountain-range-near {
+  opacity: 0.56;
+}
+
+.app-theme[data-theme="lantern"] .ember-drift {
+  position: absolute;
+  top: var(--particle-top);
+  left: var(--particle-left);
+  width: var(--particle-size);
+  height: var(--particle-size);
+  border-radius: 50%;
+  background: #f6b65e;
+  box-shadow: 0 0 12px rgba(247, 130, 57, 0.95), 0 0 25px rgba(220, 83, 48, 0.42);
+  animation: ember-rise var(--particle-duration) ease-in var(--particle-delay) infinite;
+}
+
+@keyframes star-glimmer {
+  from {
+    opacity: 0.2;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 0.92;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes ember-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12vh, 0) scale(0.65);
+  }
+
+  20% {
+    opacity: 0.95;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(var(--particle-drift), -26vh, 0) scale(0.25);
+  }
 }
 
 .app-theme .navbar-greeting {

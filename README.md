@@ -14,3 +14,18 @@ Git, GitHub, Jenkins, Docker, Kubernetes, Ansible, Terraform, Prometheus, Grafan
 - terraform/ : infrastructure code
 - monitoring/ : Prometheus and Grafana configs
 - docs/ : report, diagrams, screenshots
+
+## Run with Docker Compose
+From the repository root, build and start the task manager:
+
+```powershell
+docker compose -f docker/docker-compose.yml up --build -d
+```
+
+Open http://localhost:5000. The container health check uses `/health`, and task data is stored in the `taskmanager_data` named volume. To stop the service while keeping its data, run:
+
+```powershell
+docker compose -f docker/docker-compose.yml down
+```
+
+For non-local deployments, set `SECRET_KEY` in the environment before starting Compose.

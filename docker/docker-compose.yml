@@ -1,0 +1,17 @@
+services:
+  taskmanager:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: taskmanager:local
+    ports:
+      - "5000:5000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY:-local-development-only}
+    volumes:
+      - taskmanager_data:/app/instance
+    init: true
+    restart: unless-stopped
+
+volumes:
+  taskmanager_data:

@@ -76,6 +76,92 @@ body.app-theme > footer {
   clip-path: polygon(0 70%, 12% 51%, 23% 72%, 35% 40%, 48% 73%, 60% 48%, 71% 75%, 82% 42%, 91% 66%, 100% 50%, 100% 100%, 0 100%);
 }
 
+.mist-layer,
+.leaf-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mist-layer {
+  z-index: 1;
+  opacity: 0.42;
+}
+
+.mist-layer::before,
+.mist-layer::after {
+  position: absolute;
+  width: 78vw;
+  height: 15vh;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(218, 220, 218, 0.2), rgba(138, 143, 152, 0.08) 45%, transparent 72%);
+  content: "";
+  filter: blur(28px);
+  animation: mist-drift 38s ease-in-out infinite alternate;
+}
+
+.mist-layer::before {
+  top: 47%;
+  left: -24%;
+}
+
+.mist-layer::after {
+  top: 67%;
+  right: -26%;
+  animation-delay: -21s;
+  animation-direction: alternate-reverse;
+}
+
+.leaf-layer {
+  z-index: 2;
+}
+
+.falling-leaf {
+  position: absolute;
+  top: -7vh;
+  left: var(--leaf-left);
+  width: var(--leaf-size);
+  height: calc(var(--leaf-size) * 0.68);
+  border-radius: 100% 0 100% 0;
+  background: linear-gradient(135deg, #d34a4c, var(--crimson) 65%, #74141d);
+  box-shadow: 0 0 9px rgba(179, 32, 42, 0.26);
+  opacity: 0.72;
+  transform: rotate(-32deg);
+  animation: leaf-fall var(--leaf-duration) linear var(--leaf-delay) infinite;
+}
+
+@keyframes mist-drift {
+  from {
+    transform: translate3d(-4vw, 1vh, 0) scale(0.94);
+  }
+
+  to {
+    transform: translate3d(9vw, -2vh, 0) scale(1.08);
+  }
+}
+
+@keyframes leaf-fall {
+  from {
+    transform: translate3d(0, -5vh, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(var(--leaf-drift), 115vh, 0) rotate(560deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mist-layer,
+  .leaf-layer {
+    display: none;
+  }
+
+  .falling-leaf {
+    animation: none;
+  }
+}
+
 .app-theme .app-container {
   width: min(100% - 2rem, 1120px);
 }

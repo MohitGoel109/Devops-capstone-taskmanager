@@ -523,6 +523,51 @@ body {
   font-weight: 700;
 }
 
+.error-card {
+  width: min(100%, 560px);
+  margin: clamp(1rem, 7vh, 4rem) auto;
+  padding: clamp(1.75rem, 6vw, 3rem);
+  align-items: center;
+  text-align: center;
+}
+
+.error-icon {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1.3rem;
+  place-items: center;
+  border-radius: 16px;
+  color: var(--green);
+  background: #e6f3ed;
+  font-size: 1.5rem;
+}
+
+.error-icon-warm {
+  color: #b75d47;
+  background: #faeae3;
+}
+
+.error-code {
+  margin-bottom: 0.55rem;
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.error-card h1 {
+  margin-bottom: 0.65rem;
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+.error-copy {
+  max-width: 390px;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
 @media (max-width: 575.98px) {
   .app-navbar {
     min-height: 68px;

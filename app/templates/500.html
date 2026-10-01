@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
+{% block title %}Something went wrong | Task Manager{% endblock %}
 {% block content %}
-<div class="text-center">
-  <h1>500</h1>
-  <p class="lead">Something went wrong on our side.</p>
-  <a href="{{ url_for('login') }}" class="btn btn-primary">Try again</a>
-</div>
+<section class="card error-card">
+  <div class="error-icon"><i class="bi bi-cloud-lightning" aria-hidden="true"></i></div>
+  <p class="error-code">ERROR 500</p>
+  <h1>That didn't go to plan.</h1>
+  <p class="error-copy">Something went wrong on our side. Your tasks will be here when you return.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">
+    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Back to home
+  </a>
+</section>
 {% endblock %}

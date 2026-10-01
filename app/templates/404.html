@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
+{% block title %}Page not found | Task Manager{% endblock %}
 {% block content %}
-<div class="text-center">
-  <h1>404</h1>
-  <p class="lead">The page you are looking for does not exist.</p>
-  <a href="{{ url_for('login') }}" class="btn btn-primary">Back to Login</a>
-</div>
+<section class="card error-card">
+  <div class="error-icon error-icon-warm"><i class="bi bi-signpost-split" aria-hidden="true"></i></div>
+  <p class="error-code">ERROR 404</p>
+  <h1>We can't find that page.</h1>
+  <p class="error-copy">It may have moved, or the address may be off. Let's get you back on track.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">
+    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Back to home
+  </a>
+</section>
 {% endblock %}

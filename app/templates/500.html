@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}The Path Is Blocked | Ronin Task Board{% endblock %}
+{% block content %}
+<section class="card error-card">
+  <div class="error-icon"><i class="bi bi-shield-exclamation" aria-hidden="true"></i></div>
+  <p class="error-code">ERROR 500</p>
+  <h1>The path is blocked</h1>
+  <p class="error-copy">A momentary obstacle stopped this request. Your missions will be here when you return.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">
+    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Back to home
+  </a>
+</section>
+{% endblock %}

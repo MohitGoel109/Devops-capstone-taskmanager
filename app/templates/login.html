@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Enter the Path | Ronin Task Board{% endblock %}
+{% block content %}
+<div class="auth-layout">
+  <section class="card auth-card">
+    <div class="card-body">
+      <div class="auth-icon"><i class="bi bi-compass" aria-hidden="true"></i></div>
+      <p class="eyebrow">THE WAY OPENS</p>
+      <div class="auth-title-row">
+        <h1 class="auth-title">Enter the Path</h1>
+        <span class="hanko-stamp" aria-hidden="true">道</span>
+      </div>
+      <p class="auth-intro">Return to your missions with a steady hand.</p>
+      {% if error %}
+      <div class="alert alert-danger auth-error" role="alert">
+        <i class="bi bi-exclamation-circle me-2" aria-hidden="true"></i>{{ error }}
+      </div>
+      {% endif %}
+      <form method="post">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-person-badge" aria-hidden="true"></i>
+            <input type="text" class="form-control{% if error %} is-invalid{% endif %}" name="username" id="username" autocomplete="username" placeholder="Enter your username" required aria-invalid="{{ 'true' if error else 'false' }}">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-lock" aria-hidden="true"></i>
+            <input type="password" class="form-control{% if error %} is-invalid{% endif %}" name="password" id="password" autocomplete="current-password" placeholder="Your password" required aria-invalid="{{ 'true' if error else 'false' }}">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 auth-submit">
+          <i class="bi bi-arrow-right-circle me-2" aria-hidden="true"></i>Continue
+        </button>
+      </form>
+      <p class="auth-switch mb-0">New to the board? <a href="{{ url_for('register') }}">Join the ranks</a></p>
+    </div>
+  </section>
+</div>
+{% endblock %}

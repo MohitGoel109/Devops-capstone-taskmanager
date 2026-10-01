@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Your Missions | Ronin Task Board{% endblock %}
+{% block content %}
+{% set total_count = tasks|length %}
+{% set done_count = tasks|selectattr('completed')|list|length %}
+{% set pending_count = total_count - done_count %}
+<section class="tasks-heading">
+  <div>
+    <p class="eyebrow">任務 · YOUR DUTY</p>
+    <div class="mission-title-row">
+      <h1 class="page-title">Your Missions</h1>
+      <span class="hanko-stamp" aria-hidden="true">任務</span>
+    </div>
+    <p class="page-intro">Welcome back, {{ username }}. Choose your next step with intention.</p>
+  </div>
+  <div class="task-stats" aria-label="Task summary">
+    <div class="task-stat"><span class="task-stat-value">{{ total_count }}</span><span>Total missions</span></div>
+    <div class="task-stat"><span class="task-stat-value">{{ pending_count }}</span><span>Pending</span></div>
+    <div class="task-stat"><span class="task-stat-value">{{ done_count }}</span><span>Done</span></div>
+  </div>
+</section>
+
+<div class="mission-workspace">
+<section class="card add-task-card" aria-labelledby="add-task-title">
+  <div class="card-body">
+    <div class="add-task-heading">
+      <div class="section-icon"><i class="bi bi-plus-lg" aria-hidden="true"></i></div>
+      <div>
+        <h2 id="add-task-title" class="section-title">Add Mission</h2>
+        <p class="section-caption">Set your intention. The first step is the way.</p>
+      </div>
+    </div>
+    {% if error %}<div class="alert alert-danger auth-error" role="alert">{{ error }}</div>{% endif %}
+    <form method="post" action="{{ url_for('create_task') }}" class="add-task-form">
+      <div class="add-task-fields">
+        <div>
+          <label for="new-task-title" class="form-label">Title</label>
+          <input type="text" class="form-control" name="title" id="new-task-title" placeholder="Name this mission" required>
+        </div>
+        <div>
+          <label for="new-task-description" class="form-label">Description <span class="optional-label">Optional</span></label>
+          <input type="text" class="form-control" name="description" id="new-task-description" placeholder="Add a detail or intention">
+        </div>
+        <button class="btn btn-primary add-task-button" type="submit">
+          <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Add Mission
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="task-list-section" aria-labelledby="task-list-title">
+  <div class="list-heading">
+    <h2 id="task-list-title" class="section-title">The mission scroll</h2>
+    <span class="list-count">{{ total_count }} {{ 'mission' if total_count == 1 else 'missions' }}</span>
+  </div>
+  {% if tasks %}
+  <div class="task-list">
+    {% for task in tasks %}
+    <article class="card task-card{% if task.completed %} task-card-done{% endif %}">
+      <div class="task-card-main">
+        <div class="task-copy">
+          <div class="task-title-row">
+            <h3 class="task-title">{{ task.title }}</h3>
+            <span class="badge task-status {% if task.completed %}status-done{% else %}status-pending{% endif %}">
+              <i class="bi {% if task.completed %}bi-check-circle-fill{% else %}bi-hourglass-split{% endif %}" aria-hidden="true"></i>
+              {% if task.completed %}Done <span lang="ja">完了</span>{% else %}Pending{% endif %}
+            </span>
+          </div>
+          {% if task.description %}<p class="task-description">{{ task.description }}</p>{% endif %}
+          <time class="task-date" datetime="{{ task.created_at.isoformat() }}">
+            <i class="bi bi-calendar3 me-1" aria-hidden="true"></i>{{ task.created_at.strftime('%b %d, %Y') }}
+          </time>
+        </div>
+        <div class="task-actions">
+          <form method="post" action="{{ url_for('update_task', task_id=task.id) }}" class="completion-form">
+            <input type="hidden" name="title" value="{{ task.title }}">
+            <input type="hidden" name="description" value="{{ task.description or '' }}">
+            <label class="form-check completion-toggle">
+              <input class="form-check-input" type="checkbox" name="completed" {% if task.completed %}checked{% endif %} onchange="this.form.submit()">
+              <span class="form-check-label">{{ 'Undo completion' if task.completed else 'Complete mission' }}</span>
+            </label>
+          </form>
+          <details class="task-edit">
+            <summary class="btn btn-sm btn-outline-secondary" aria-label="Edit {{ task.title }}">
+              <i class="bi bi-pencil-square" aria-hidden="true"></i><span class="action-label">Edit</span>
+            </summary>
+            <form method="post" action="{{ url_for('update_task', task_id=task.id) }}" class="task-edit-form">
+              <label class="form-label" for="task-title-{{ task.id }}">Title</label>
+              <input type="text" class="form-control mb-3" name="title" id="task-title-{{ task.id }}" value="{{ task.title }}" required>
+              <label class="form-label" for="task-description-{{ task.id }}">Description</label>
+              <textarea class="form-control mb-3" name="description" id="task-description-{{ task.id }}" rows="2">{{ task.description or '' }}</textarea>
+              <label class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="completed" {% if task.completed %}checked{% endif %}>
+                <span class="form-check-label">Done</span>
+              </label>
+              <button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-check2 me-1" aria-hidden="true"></i>Save mission</button>
+            </form>
+          </details>
+          <form method="post" action="{{ url_for('delete_task', task_id=task.id) }}" onsubmit="return confirm('Delete this task?');">
+            <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Delete {{ task.title }}">
+              <i class="bi bi-trash3" aria-hidden="true"></i><span class="action-label">Delete</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card empty-state">
+    <div class="empty-icon"><i class="bi bi-check2-square" aria-hidden="true"></i></div>
+    <h3>No missions yet. The path is quiet.</h3>
+    <p class="mb-0">Add a mission above when you are ready to move.</p>
+  </div>
+  {% endif %}
+</section>
+</div>
+{% endblock %}

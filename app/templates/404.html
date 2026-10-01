@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Lost in the Mist | Ronin Task Board{% endblock %}
+{% block content %}
+<section class="card error-card">
+  <div class="error-icon error-icon-warm"><i class="bi bi-cloud-fog2" aria-hidden="true"></i></div>
+  <p class="error-code">ERROR 404</p>
+  <h1>Lost in the mist</h1>
+  <p class="error-copy">The trail has disappeared into the fog. Return to the board and find your way.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">
+    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Back to home
+  </a>
+</section>
+{% endblock %}

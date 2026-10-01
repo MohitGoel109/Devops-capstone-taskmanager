@@ -1,4 +1,33 @@
 (() => {
+  const themeSelect = document.querySelector("#theme-select");
+  const validThemes = ["ink", "pine", "steel"];
+  let savedTheme = "ink";
+
+  try {
+    const storedTheme = window.localStorage.getItem("ronin-task-board-theme");
+    if (validThemes.includes(storedTheme)) {
+      savedTheme = storedTheme;
+    }
+  } catch (error) {
+    savedTheme = "ink";
+  }
+
+  document.body.dataset.theme = savedTheme;
+
+  if (themeSelect) {
+    themeSelect.value = savedTheme;
+    themeSelect.addEventListener("change", () => {
+      const selectedTheme = validThemes.includes(themeSelect.value) ? themeSelect.value : "ink";
+      document.body.dataset.theme = selectedTheme;
+
+      try {
+        window.localStorage.setItem("ronin-task-board-theme", selectedTheme);
+      } catch (error) {
+        return;
+      }
+    });
+  }
+
   const leafLayer = document.querySelector(".leaf-layer");
 
   if (!leafLayer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

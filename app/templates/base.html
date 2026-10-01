@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
   </head>
-  <body class="app-theme">
+  <body class="app-theme" data-theme="ink">
     <div class="world-backdrop" aria-hidden="true">
       <span class="mountain-range mountain-range-far"></span>
       <span class="mountain-range mountain-range-near"></span>
@@ -29,6 +29,15 @@
           <span>Ronin Task Board</span>
         </a>
         <div class="d-flex align-items-center gap-2 nav-links">
+          <label class="theme-control" for="theme-select">
+            <i class="bi bi-palette2" aria-hidden="true"></i>
+            <span class="visually-hidden">Choose a color theme</span>
+            <select id="theme-select" class="form-select form-select-sm theme-select" aria-label="Choose a color theme">
+              <option value="ink">Ink &amp; Crimson</option>
+              <option value="pine">Mist &amp; Pine</option>
+              <option value="steel">Moonlit Steel</option>
+            </select>
+          </label>
           {% if 'user_id' in session %}
           <span class="navbar-greeting d-none d-sm-inline">Hi, {{ session['username'] }}</span>
           <a class="nav-link nav-action{% if request.endpoint == 'tasks_page' %} active{% endif %}" href="{{ url_for('tasks_page') }}"{% if request.endpoint == 'tasks_page' %} aria-current="page"{% endif %}>

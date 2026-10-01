@@ -205,14 +205,140 @@ body.app-theme > footer {
   text-decoration: none;
 }
 
-.app-theme .nav-link.active::after {
-  position: absolute;
-  right: 0.5rem;
-  bottom: 0.18rem;
-  left: 0.5rem;
-  height: 2px;
-  background: var(--crimson);
-  content: "";
+.app-theme .nav-link.active {
+  color: var(--crimson);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.theme-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--gold);
+}
+
+.app-theme .theme-select {
+  width: 148px;
+  min-height: 34px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-color: rgba(201, 162, 75, 0.46);
+  color: var(--mist);
+  background-color: rgba(13, 13, 15, 0.68);
+  font-size: 0.72rem;
+}
+
+.app-theme .theme-select option {
+  color: #e8e4dc;
+  background: #191b20;
+}
+
+.app-theme[data-theme="pine"] {
+  color-scheme: light;
+  --ink: #17221a;
+  --mist: #29372d;
+  --crimson: #965043;
+  --gold: #98733a;
+  --slate: #cdd5c7;
+  --fog: #667468;
+  --muted: rgba(41, 55, 45, 0.76);
+  --green: #527457;
+  --green-dark: #3e6047;
+  --line: rgba(125, 106, 65, 0.44);
+  --surface: rgba(242, 238, 222, 0.93);
+  --shadow: 0 22px 54px rgba(46, 58, 43, 0.18);
+  background:
+    radial-gradient(ellipse at 52% 0%, rgba(228, 222, 197, 0.88), transparent 44rem),
+    linear-gradient(155deg, #d9e0d1 0%, #aebba9 50%, #6d7d70 100%);
+}
+
+.app-theme[data-theme="pine"] .app-navbar,
+.app-theme[data-theme="pine"] .app-footer {
+  border-color: rgba(91, 104, 74, 0.24);
+  background: rgba(237, 235, 218, 0.85);
+}
+
+.app-theme[data-theme="pine"] .card {
+  background: var(--surface);
+}
+
+.app-theme[data-theme="pine"] .form-control {
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.app-theme[data-theme="pine"] .form-control:focus {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.app-theme[data-theme="pine"] .btn-primary {
+  color: #fff7e9;
+}
+
+.app-theme[data-theme="pine"] .task-edit-form {
+  background: #f2eedf;
+}
+
+.app-theme[data-theme="pine"] .mountain-range-far {
+  background: linear-gradient(180deg, rgba(88, 109, 89, 0.18), rgba(49, 70, 56, 0.16));
+}
+
+.app-theme[data-theme="pine"] .mountain-range-near {
+  background: linear-gradient(180deg, rgba(73, 94, 76, 0.55), rgba(37, 56, 44, 0.82));
+}
+
+.app-theme[data-theme="steel"] {
+  --ink: #10171c;
+  --mist: #e1e8eb;
+  --crimson: #477786;
+  --gold: #a8b7bd;
+  --slate: #34434a;
+  --fog: #91a0a6;
+  --muted: rgba(225, 232, 235, 0.7);
+  --green: #688979;
+  --green-dark: #4e7061;
+  --line: rgba(168, 183, 189, 0.38);
+  --surface: rgba(29, 40, 46, 0.92);
+  --shadow: 0 22px 54px rgba(3, 10, 15, 0.48);
+  background:
+    radial-gradient(ellipse at 48% 0%, rgba(92, 116, 127, 0.42), transparent 44rem),
+    linear-gradient(155deg, #34434a 0%, #1b272e 52%, #10171c 100%);
+}
+
+.app-theme[data-theme="steel"] .app-navbar,
+.app-theme[data-theme="steel"] .app-footer {
+  border-color: rgba(168, 183, 189, 0.22);
+  background: rgba(16, 23, 28, 0.78);
+}
+
+.app-theme[data-theme="steel"] .card {
+  background: var(--surface);
+}
+
+.app-theme[data-theme="steel"] .form-control {
+  border-color: rgba(168, 183, 189, 0.34);
+  background: rgba(16, 23, 28, 0.72);
+}
+
+.app-theme[data-theme="steel"] .form-control:focus {
+  background: rgba(16, 23, 28, 0.92);
+}
+
+.app-theme[data-theme="steel"] .btn-primary {
+  color: #f0f5f6;
+}
+
+.app-theme[data-theme="steel"] .task-edit-form {
+  background: #1d282e;
+}
+
+.app-theme[data-theme="steel"] .mountain-range-far {
+  background: linear-gradient(180deg, rgba(168, 183, 189, 0.13), rgba(16, 23, 28, 0.18));
+}
+
+.app-theme[data-theme="steel"] .mountain-range-near {
+  background: linear-gradient(180deg, rgba(36, 53, 61, 0.54), rgba(12, 19, 24, 0.84));
 }
 
 .app-theme .navbar-greeting {
@@ -488,6 +614,13 @@ body.app-theme > footer {
   margin-bottom: 2rem;
 }
 
+.app-theme .mission-workspace {
+  display: grid;
+  grid-template-columns: minmax(270px, 0.78fr) minmax(0, 1.42fr);
+  align-items: start;
+  gap: 1.35rem;
+}
+
 .app-theme .mission-title-row {
   display: flex;
   align-items: center;
@@ -761,6 +894,10 @@ body.app-theme > footer {
     gap: 1.25rem;
   }
 
+  .app-theme .mission-workspace {
+    grid-template-columns: 1fr;
+  }
+
   .app-theme .task-stats {
     width: 100%;
     justify-content: space-between;
@@ -828,6 +965,23 @@ body.app-theme > footer {
 
   .app-theme .nav-links {
     gap: 0.15rem !important;
+  }
+
+  .theme-control {
+    width: 34px;
+    height: 34px;
+    justify-content: center;
+    border: 1px solid rgba(201, 162, 75, 0.46);
+    border-radius: 4px;
+  }
+
+  .app-theme .theme-select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
   }
 
   .app-theme .nav-action {

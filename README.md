@@ -22,10 +22,10 @@ From the repository root, build and start the task manager:
 docker compose -f docker/docker-compose.yml up --build -d
 ```
 
-Open http://localhost:5000. The container health check uses `/health`, and task data is stored in the `taskmanager_data` named volume. To stop the service while keeping its data, run:
+Copy `.env.example` to `.env` before starting Compose. The `web` service waits for PostgreSQL to pass `pg_isready`; database settings and `DATABASE_URL` are read from `.env`. Open http://localhost:5000. The PostgreSQL data is stored in the `postgres_data` named volume. To stop the services while keeping database data, run:
 
 ```powershell
 docker compose -f docker/docker-compose.yml down
 ```
 
-For non-local deployments, set `SECRET_KEY` in the environment before starting Compose.
+For non-local deployments, replace the example `SECRET_KEY` and database password with securely managed values.

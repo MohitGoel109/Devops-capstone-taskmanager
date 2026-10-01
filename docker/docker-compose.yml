@@ -1,17 +1,32 @@
 services:
-  taskmanager:
+  db:
+    image: postgres:16
+    env_file:
+      - ../.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  web:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     image: taskmanager:local
     ports:
       - "5000:5000"
-    environment:
-      SECRET_KEY: ${SECRET_KEY:-local-development-only}
-    volumes:
-      - taskmanager_data:/app/instance
+    env_file:
+      - ../.env
+    depends_on:
+      db:
+        condition: service_healthy
     init: true
     restart: unless-stopped
 
 volumes:
-  taskmanager_data:
+  postgres_data:

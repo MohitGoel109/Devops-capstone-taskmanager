@@ -1,69 +1,114 @@
 {% extends 'base.html' %}
+{% block title %}Your Tasks | Task Manager{% endblock %}
 {% block content %}
-<div class="row g-4">
-  <div class="col-lg-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title">Create Task</h3>
-        {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
-        <form method="post" action="{{ url_for('create_task') }}">
-          <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" name="description" rows="3"></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit">Add Task</button>
-        </form>
-      </div>
-    </div>
+{% set total_count = tasks|length %}
+{% set done_count = tasks|selectattr('completed')|list|length %}
+{% set pending_count = total_count - done_count %}
+<section class="tasks-heading">
+  <div>
+    <p class="eyebrow">YOUR DAY, IN VIEW</p>
+    <h1 class="page-title">A little progress adds up.</h1>
+    <p class="page-intro">Welcome back, {{ username }}. What would you like to get done?</p>
   </div>
+  <div class="task-stats" aria-label="Task summary">
+    <div class="task-stat"><span class="task-stat-value">{{ total_count }}</span><span>Total</span></div>
+    <div class="task-stat"><span class="task-stat-value">{{ pending_count }}</span><span>Pending</span></div>
+    <div class="task-stat"><span class="task-stat-value">{{ done_count }}</span><span>Done</span></div>
+  </div>
+</section>
 
-  <div class="col-lg-8">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title">Your Tasks</h3>
-        {% if tasks %}
-          {% for task in tasks %}
-            <div class="border rounded p-3 mb-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="mb-1">{{ task.title }}</h5>
-                  <small class="text-muted">{{ task.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
-                </div>
-                <span class="badge {% if task.completed %}bg-success{% else %}bg-secondary{% endif %}">
-                  {% if task.completed %}Done{% else %}Open{% endif %}
-                </span>
-              </div>
-              {% if task.description %}
-                <p class="mt-2 mb-3">{{ task.description }}</p>
-              {% endif %}
-              <div class="d-flex gap-2">
-                <form method="post" action="{{ url_for('update_task', task_id=task.id) }}">
-                  <input type="checkbox" name="completed" {% if task.completed %}checked{% endif %}>
-                  <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
-                </form>
-                <form method="post" action="{{ url_for('delete_task', task_id=task.id) }}" onsubmit="return confirm('Delete this task?');">
-                  <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                </form>
-              </div>
-              <form method="post" action="{{ url_for('update_task', task_id=task.id) }}" class="mt-3">
-                <input type="text" class="form-control mb-2" name="title" value="{{ task.title }}" required>
-                <textarea class="form-control mb-2" name="description" rows="2">{{ task.description or '' }}</textarea>
-                <label class="form-check-label">
-                  <input type="checkbox" name="completed" {% if task.completed %}checked{% endif %}> Completed
-                </label>
-                <button class="btn btn-sm btn-outline-secondary mt-2" type="submit">Update</button>
-              </form>
-            </div>
-          {% endfor %}
-        {% else %}
-          <p class="text-muted mb-0">No tasks yet. Add one to get started.</p>
-        {% endif %}
+<section class="card add-task-card" aria-labelledby="add-task-title">
+  <div class="card-body">
+    <div class="add-task-heading">
+      <div class="section-icon"><i class="bi bi-plus-lg" aria-hidden="true"></i></div>
+      <div>
+        <h2 id="add-task-title" class="section-title">Add a task</h2>
+        <p class="section-caption">Get it out of your head and onto the list.</p>
       </div>
     </div>
+    {% if error %}<div class="alert alert-danger auth-error" role="alert">{{ error }}</div>{% endif %}
+    <form method="post" action="{{ url_for('create_task') }}" class="add-task-form">
+      <div class="add-task-fields">
+        <div>
+          <label for="new-task-title" class="form-label">Title</label>
+          <input type="text" class="form-control" name="title" id="new-task-title" placeholder="What needs doing?" required>
+        </div>
+        <div>
+          <label for="new-task-description" class="form-label">Description <span class="optional-label">Optional</span></label>
+          <input type="text" class="form-control" name="description" id="new-task-description" placeholder="Add a little context">
+        </div>
+        <button class="btn btn-primary add-task-button" type="submit">
+          <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Add task
+        </button>
+      </div>
+    </form>
   </div>
-</div>
+</section>
+
+<section class="task-list-section" aria-labelledby="task-list-title">
+  <div class="list-heading">
+    <h2 id="task-list-title" class="section-title">Your tasks</h2>
+    <span class="list-count">{{ total_count }} {{ 'task' if total_count == 1 else 'tasks' }}</span>
+  </div>
+  {% if tasks %}
+  <div class="task-list">
+    {% for task in tasks %}
+    <article class="card task-card{% if task.completed %} task-card-done{% endif %}">
+      <div class="task-card-main">
+        <div class="task-copy">
+          <div class="task-title-row">
+            <h3 class="task-title">{{ task.title }}</h3>
+            <span class="badge task-status {% if task.completed %}status-done{% else %}status-pending{% endif %}">
+              <i class="bi {% if task.completed %}bi-check-circle-fill{% else %}bi-hourglass-split{% endif %}" aria-hidden="true"></i>
+              {{ 'Done' if task.completed else 'Pending' }}
+            </span>
+          </div>
+          {% if task.description %}<p class="task-description">{{ task.description }}</p>{% endif %}
+          <time class="task-date" datetime="{{ task.created_at.isoformat() }}">
+            <i class="bi bi-calendar3 me-1" aria-hidden="true"></i>{{ task.created_at.strftime('%b %d, %Y') }}
+          </time>
+        </div>
+        <div class="task-actions">
+          <form method="post" action="{{ url_for('update_task', task_id=task.id) }}" class="completion-form">
+            <input type="hidden" name="title" value="{{ task.title }}">
+            <input type="hidden" name="description" value="{{ task.description or '' }}">
+            <label class="form-check completion-toggle">
+              <input class="form-check-input" type="checkbox" name="completed" {% if task.completed %}checked{% endif %} onchange="this.form.submit()">
+              <span class="form-check-label">{{ 'Mark pending' if task.completed else 'Mark done' }}</span>
+            </label>
+          </form>
+          <details class="task-edit">
+            <summary class="btn btn-sm btn-outline-secondary" aria-label="Edit {{ task.title }}">
+              <i class="bi bi-pencil-square" aria-hidden="true"></i><span class="action-label">Edit</span>
+            </summary>
+            <form method="post" action="{{ url_for('update_task', task_id=task.id) }}" class="task-edit-form">
+              <label class="form-label" for="task-title-{{ task.id }}">Title</label>
+              <input type="text" class="form-control mb-3" name="title" id="task-title-{{ task.id }}" value="{{ task.title }}" required>
+              <label class="form-label" for="task-description-{{ task.id }}">Description</label>
+              <textarea class="form-control mb-3" name="description" id="task-description-{{ task.id }}" rows="2">{{ task.description or '' }}</textarea>
+              <label class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="completed" {% if task.completed %}checked{% endif %}>
+                <span class="form-check-label">Done</span>
+              </label>
+              <button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-check2 me-1" aria-hidden="true"></i>Save changes</button>
+            </form>
+          </details>
+          <form method="post" action="{{ url_for('delete_task', task_id=task.id) }}" onsubmit="return confirm('Delete this task?');">
+            <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Delete {{ task.title }}">
+              <i class="bi bi-trash3" aria-hidden="true"></i><span class="action-label">Delete</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card empty-state">
+    <div class="empty-icon"><i class="bi bi-check2-square" aria-hidden="true"></i></div>
+    <h3>Your list is clear.</h3>
+    <p class="mb-0">Add a task above when something comes to mind.</p>
+  </div>
+  {% endif %}
+</section>
 {% endblock %}

@@ -1,4 +1,4 @@
-# DevOps Capstone: Task Manager (Version B)
+# DevOps Capstone: Task Manager
 
 End-to-end DevOps pipeline for deploying a cloud-native Task Manager application.
 

@@ -3,31 +3,41 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f3f7f5">
-    <title>{% block title %}Task Manager{% endblock %}</title>
+    <meta name="theme-color" content="#0d0d0f">
+    <title>{% block title %}Ronin Task Board{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
   </head>
-  <body>
-    <nav class="navbar navbar-expand navbar-light app-navbar">
+  <body class="app-theme">
+    <div class="world-backdrop" aria-hidden="true">
+      <span class="mountain-range mountain-range-far"></span>
+      <span class="mountain-range mountain-range-near"></span>
+    </div>
+    <nav class="navbar navbar-expand app-navbar">
       <div class="container app-container">
         <a class="navbar-brand" href="{{ url_for('index') }}">
-          <span class="brand-mark"><i class="bi bi-check2"></i></span>
-          <span>Task Manager</span>
+          <svg class="brand-katana" viewBox="0 0 48 48" role="img" aria-label="Katana">
+            <path d="M35 5c1 13-7 26-21 33l-7 3 3-7C17 20 27 12 35 5Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" />
+            <path d="m10 31 8 8m-3-13 7 7M8 38l-3 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+          <span>Ronin Task Board</span>
         </a>
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2 nav-links">
           {% if 'user_id' in session %}
           <span class="navbar-greeting d-none d-sm-inline">Hi, {{ session['username'] }}</span>
-          <a class="btn btn-outline-secondary btn-sm nav-action" href="{{ url_for('logout') }}">
+          <a class="nav-link nav-action{% if request.endpoint == 'tasks_page' %} active{% endif %}" href="{{ url_for('tasks_page') }}"{% if request.endpoint == 'tasks_page' %} aria-current="page"{% endif %}>
+            <i class="bi bi-list-check me-1" aria-hidden="true"></i>Missions
+          </a>
+          <a class="btn btn-outline-gold btn-sm nav-action" href="{{ url_for('logout') }}">
             <i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout
           </a>
           {% else %}
-          <a class="btn btn-link btn-sm nav-action" href="{{ url_for('login') }}">Login</a>
-          <a class="btn btn-primary btn-sm nav-action" href="{{ url_for('register') }}">Register</a>
+          <a class="nav-link nav-action{% if request.endpoint == 'login' %} active{% endif %}" href="{{ url_for('login') }}"{% if request.endpoint == 'login' %} aria-current="page"{% endif %}>Login</a>
+          <a class="nav-link nav-action{% if request.endpoint == 'register' %} active{% endif %}" href="{{ url_for('register') }}"{% if request.endpoint == 'register' %} aria-current="page"{% endif %}>Register</a>
           {% endif %}
         </div>
       </div>
@@ -47,8 +57,8 @@
 
     <footer class="app-footer">
       <div class="container app-container d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <span>Task Manager</span>
-        <span>Make room for what matters.</span>
+        <span>Built with discipline and honour</span>
+        <span>DevOps Capstone</span>
       </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

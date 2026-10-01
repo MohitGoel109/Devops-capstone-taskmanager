@@ -3,23 +3,54 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Task Manager</title>
+    <meta name="theme-color" content="#f3f7f5">
+    <title>{% block title %}Task Manager{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
   </head>
-  <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-      <div class="container">
-        <a class="navbar-brand" href="{{ url_for('tasks_page') if 'user_id' in session else url_for('login') }}">Task Manager</a>
-        {% if 'user_id' in session %}
-        <div class="ms-auto d-flex align-items-center gap-3 text-white">
-          <span>Hi, {{ session['username'] }}</span>
-          <a class="btn btn-outline-light btn-sm" href="{{ url_for('logout') }}">Logout</a>
+  <body>
+    <nav class="navbar navbar-expand navbar-light app-navbar">
+      <div class="container app-container">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+          <span class="brand-mark"><i class="bi bi-check2"></i></span>
+          <span>Task Manager</span>
+        </a>
+        <div class="d-flex align-items-center gap-2">
+          {% if 'user_id' in session %}
+          <span class="navbar-greeting d-none d-sm-inline">Hi, {{ session['username'] }}</span>
+          <a class="btn btn-outline-secondary btn-sm nav-action" href="{{ url_for('logout') }}">
+            <i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout
+          </a>
+          {% else %}
+          <a class="btn btn-link btn-sm nav-action" href="{{ url_for('login') }}">Login</a>
+          <a class="btn btn-primary btn-sm nav-action" href="{{ url_for('register') }}">Register</a>
+          {% endif %}
         </div>
-        {% endif %}
       </div>
     </nav>
-    <div class="container">
+
+    <main class="container app-container app-main">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show app-alert" role="alert">
+            <i class="bi bi-{{ 'exclamation-circle' if category == 'error' else 'info-circle' }} me-2" aria-hidden="true"></i>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endwith %}
       {% block content %}{% endblock %}
-    </div>
+    </main>
+
+    <footer class="app-footer">
+      <div class="container app-container d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <span>Task Manager</span>
+        <span>Make room for what matters.</span>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

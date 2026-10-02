@@ -17,6 +17,7 @@ RUN apt-get update && \
         python3-venv && \
     rm -rf /var/lib/apt/lists/*
 
-RUN jenkins-plugin-cli --plugins "git github pipeline-stage-view workflow-aggregator junit pipeline-groovy-lib" 
+RUN usermod -aG root jenkins && \
+    jenkins-plugin-cli --plugins "git github pipeline-stage-view workflow-aggregator junit pipeline-groovy-lib"
 
 USER jenkins

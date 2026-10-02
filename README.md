@@ -37,6 +37,10 @@ docker compose -f docker/docker-compose.yml up --build -d
 
 For non-local deployments, replace the example `SECRET_KEY` and database password with securely managed values.
 
+## Deploy to Kubernetes
+
+The local kind cluster exposes the task manager at `http://localhost:30080` and reserves `30300` and `30900` for Grafana and Prometheus. Create the `capstone` cluster, enter the real database and Flask secrets through the PowerShell prompts, then apply the namespaced manifests as described in [docs/kubernetes.md](docs/kubernetes.md). The committed `k8s/secret.example.yaml` contains placeholders only; never commit `k8s/secret.yaml`.
+
 ## Run Jenkins CI
 Start the Jenkins controller and its isolated Docker builder from the repository root:
 

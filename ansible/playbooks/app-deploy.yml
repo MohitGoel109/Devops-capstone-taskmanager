@@ -1,0 +1,46 @@
+---
+- name: Deploy Task Manager to local Kubernetes
+  hosts: taskmanager
+  gather_facts: false
+  tasks:
+    - name: Apply PostgreSQL and Task Manager manifests
+      ansible.builtin.command:
+        argv:
+          - powershell.exe
+          - -NoProfile
+          - -Command
+          - |
+            $repoRoot = (Get-Item ..).FullName
+            $kubectlPath = Join-Path $env:ProgramFiles 'Docker\Docker\resources\bin\kubectl.exe'
+            $postgresManifest = Join-Path $repoRoot 'k8s\postgres.yaml'
+            $appManifest = Join-Path $repoRoot 'k8s\taskmanager.yaml'
+            & $kubectlPath --context '{{ kubernetes_windows_context }}' apply -f $postgresManifest -f $appManifest
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      register: deployment_apply
+      changed_when: >-
+        ' created' in deployment_apply.stdout or
+        ' configured' in deployment_apply.stdout
+
+    - name: Wait for PostgreSQL rollout
+      ansible.builtin.command:
+        argv:
+          - powershell.exe
+          - -NoProfile
+          - -Command
+          - >-
+            & (Join-Path $env:ProgramFiles 'Docker\Docker\resources\bin\kubectl.exe')
+            --context '{{ kubernetes_windows_context }}' rollout status deployment/postgres
+            -n '{{ kubernetes_namespace }}' --timeout=180s
+      changed_when: false
+
+    - name: Wait for Task Manager rollout
+      ansible.builtin.command:
+        argv:
+          - powershell.exe
+          - -NoProfile
+          - -Command
+          - >-
+            & (Join-Path $env:ProgramFiles 'Docker\Docker\resources\bin\kubectl.exe')
+            --context '{{ kubernetes_windows_context }}' rollout status deployment/taskmanager
+            -n '{{ kubernetes_namespace }}' --timeout=180s
+      changed_when: false

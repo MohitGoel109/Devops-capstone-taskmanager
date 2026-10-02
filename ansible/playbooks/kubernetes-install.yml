@@ -1,0 +1,41 @@
+---
+- name: Ensure local kind cluster is ready
+  hosts: taskmanager
+  gather_facts: false
+  tasks:
+    - name: Verify host kind and kubectl are available
+      ansible.builtin.command:
+        argv:
+          - powershell.exe
+          - -NoProfile
+          - -Command
+          - >-
+            $kindMatches = @(Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'Microsoft\WinGet\Packages\Kubernetes.kind_*') -Filter kind.exe -File -Recurse);
+            $kubectlPath = Join-Path $env:ProgramFiles 'Docker\Docker\resources\bin\kubectl.exe';
+            if (-not $kindMatches) { throw 'kind.exe is unavailable' };
+            if (-not (Test-Path $kubectlPath)) { throw 'kubectl.exe is unavailable' }
+      changed_when: false
+
+    - name: Ensure capstone cluster, namespace, and local app image
+      ansible.builtin.command:
+        argv:
+          - powershell.exe
+          - -NoProfile
+          - -Command
+          - |
+            $repoRoot = (Get-Item ..).FullName
+            $kindMatches = @(Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'Microsoft\WinGet\Packages\Kubernetes.kind_*') -Filter kind.exe -File -Recurse)
+            $kindPath = $kindMatches[0].FullName
+            $kubectlPath = Join-Path $env:ProgramFiles 'Docker\Docker\resources\bin\kubectl.exe'
+            $clusters = & $kindPath get clusters
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            if ($clusters -notcontains '{{ kubernetes_cluster_name }}') {
+              & $kindPath create cluster --name '{{ kubernetes_cluster_name }}' --config (Join-Path $repoRoot 'k8s\kind-config.yaml')
+              if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            }
+            & $kubectlPath --context '{{ kubernetes_windows_context }}' apply -f (Join-Path $repoRoot 'k8s\namespace.yaml')
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            & $kindPath load docker-image '{{ taskmanager_app_image }}' --name '{{ kubernetes_cluster_name }}'
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      register: kind_setup
+      changed_when: "'Creating cluster' in kind_setup.stdout or 'namespace/taskmanager created' in kind_setup.stdout or 'loading...' in kind_setup.stdout"

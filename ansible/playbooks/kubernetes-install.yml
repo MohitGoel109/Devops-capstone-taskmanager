@@ -1,0 +1,36 @@
+---
+- name: Install kubectl and kind on Linux (WSL)
+  hosts: taskmanager
+  become: true
+  gather_facts: true
+  vars:
+    kubectl_version: "v1.31.0"
+    kind_version: "v0.24.0"
+  tasks:
+    - name: Install kubectl binary
+      ansible.builtin.get_url:
+        url: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl"
+        dest: /usr/local/bin/kubectl
+        mode: "0755"
+
+    - name: Install kind binary
+      ansible.builtin.get_url:
+        url: "https://kind.sigs.k8s.io/dl/{{ kind_version }}/kind-linux-amd64"
+        dest: /usr/local/bin/kind
+        mode: "0755"
+
+    - name: Check kubectl version
+      ansible.builtin.command: kubectl version --client
+      register: kubectl_out
+      changed_when: false
+
+    - name: Check kind version
+      ansible.builtin.command: kind version
+      register: kind_out
+      changed_when: false
+
+    - name: Show versions
+      ansible.builtin.debug:
+        msg:
+          - "{{ kubectl_out.stdout_lines }}"
+          - "{{ kind_out.stdout }}"

@@ -1,0 +1,65 @@
+---
+- name: Manage local Task Manager service configuration
+  hosts: taskmanager
+  become: true
+  vars:
+    taskmanager_systemd_unit: /etc/systemd/system/taskmanager-config.service
+  tasks:
+    - name: Ensure configuration directory exists
+      ansible.builtin.file:
+        path: "{{ taskmanager_config_path | dirname }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0750"
+
+    - name: Render Task Manager configuration
+      ansible.builtin.template:
+        src: "{{ inventory_dir }}/templates/taskmanager.conf.j2"
+        dest: "{{ taskmanager_config_path }}"
+        owner: root
+        group: root
+        mode: "0640"
+      notify: Restart configuration validation service
+
+    - name: Install configuration validation service
+      ansible.builtin.copy:
+        dest: "{{ taskmanager_systemd_unit }}"
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Validate managed Task Manager configuration
+          After=local-fs.target
+
+          [Service]
+          Type=oneshot
+          RemainAfterExit=yes
+          ExecStart=/usr/bin/test -s {{ taskmanager_config_path }}
+
+          [Install]
+          WantedBy=multi-user.target
+      notify:
+        - Reload systemd configuration
+        - Restart configuration validation service
+
+    - name: Ensure configuration validation service is enabled and running
+      ansible.builtin.systemd:
+        name: "{{ taskmanager_config_service }}"
+        enabled: true
+        state: started
+        daemon_reload: true
+      when: not ansible_check_mode
+
+  handlers:
+    - name: Reload systemd configuration
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Restart configuration validation service
+      ansible.builtin.systemd:
+        name: "{{ taskmanager_config_service }}"
+        state: restarted
+        daemon_reload: true
+      when: not ansible_check_mode

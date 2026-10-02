@@ -14,6 +14,7 @@ RUN apt-get update && \
         python3-dev \
         python3-pip \
         python3-venv && \
+    ln -sf /usr/bin/docker.io /usr/bin/docker && \
     rm -rf /var/lib/apt/lists/*
 
 RUN jenkins-plugin-cli --plugins "git github pipeline-stage-view workflow-aggregator junit pipeline-groovy-lib" 

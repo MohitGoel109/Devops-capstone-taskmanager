@@ -1,41 +1,36 @@
 ---
-- name: Ensure local kind cluster is ready
+- name: Install kubectl and kind on Linux (WSL)
   hosts: taskmanager
-  gather_facts: false
+  become: true
+  gather_facts: true
+  vars:
+    kubectl_version: "v1.31.0"
+    kind_version: "v0.24.0"
   tasks:
-    - name: Verify host kind and kubectl are available
-      ansible.builtin.command:
-        argv:
-          - powershell.exe
-          - -NoProfile
-          - -Command
-          - >-
-            $kindMatches = @(Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'Microsoft\WinGet\Packages\Kubernetes.kind_*') -Filter kind.exe -File -Recurse);
-            $kubectlPath = Join-Path $env:ProgramFiles 'Docker\Docker\resources\bin\kubectl.exe';
-            if (-not $kindMatches) { throw 'kind.exe is unavailable' };
-            if (-not (Test-Path $kubectlPath)) { throw 'kubectl.exe is unavailable' }
+    - name: Install kubectl binary
+      ansible.builtin.get_url:
+        url: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl"
+        dest: /usr/local/bin/kubectl
+        mode: "0755"
+
+    - name: Install kind binary
+      ansible.builtin.get_url:
+        url: "https://kind.sigs.k8s.io/dl/{{ kind_version }}/kind-linux-amd64"
+        dest: /usr/local/bin/kind
+        mode: "0755"
+
+    - name: Check kubectl version
+      ansible.builtin.command: kubectl version --client
+      register: kubectl_out
       changed_when: false
 
-    - name: Ensure capstone cluster, namespace, and local app image
-      ansible.builtin.command:
-        argv:
-          - powershell.exe
-          - -NoProfile
-          - -Command
-          - |
-            $repoRoot = (Get-Item ..).FullName
-            $kindMatches = @(Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'Microsoft\WinGet\Packages\Kubernetes.kind_*') -Filter kind.exe -File -Recurse)
-            $kindPath = $kindMatches[0].FullName
-            $kubectlPath = Join-Path $env:ProgramFiles 'Docker\Docker\resources\bin\kubectl.exe'
-            $clusters = & $kindPath get clusters
-            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-            if ($clusters -notcontains '{{ kubernetes_cluster_name }}') {
-              & $kindPath create cluster --name '{{ kubernetes_cluster_name }}' --config (Join-Path $repoRoot 'k8s\kind-config.yaml')
-              if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-            }
-            & $kubectlPath --context '{{ kubernetes_windows_context }}' apply -f (Join-Path $repoRoot 'k8s\namespace.yaml')
-            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-            & $kindPath load docker-image '{{ taskmanager_app_image }}' --name '{{ kubernetes_cluster_name }}'
-            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      register: kind_setup
-      changed_when: "'Creating cluster' in kind_setup.stdout or 'namespace/taskmanager created' in kind_setup.stdout or 'loading...' in kind_setup.stdout"
+    - name: Check kind version
+      ansible.builtin.command: kind version
+      register: kind_out
+      changed_when: false
+
+    - name: Show versions
+      ansible.builtin.debug:
+        msg:
+          - "{{ kubectl_out.stdout_lines }}"
+          - "{{ kind_out.stdout }}"

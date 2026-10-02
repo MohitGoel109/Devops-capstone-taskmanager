@@ -12,7 +12,7 @@ pipeline {
     }
 
     environment {
-        TASKMANAGER_IMAGE = 'taskmanager:${BUILD_NUMBER}'
+        TASKMANAGER_IMAGE = "taskmanager:${BUILD_NUMBER}"
     }
 
     stages {
@@ -48,7 +48,7 @@ pipeline {
                 sh '''
                     . .venv/bin/activate
                     mkdir -p reports
-                    pytest app/tests --junitxml=reports/junit.xml --cov=app --cov-report=xml:reports/coverage.xml
+                    python -m pytest app/tests --junitxml=reports/junit.xml --cov=app --cov-report=xml:reports/coverage.xml
                 '''
             }
             post {

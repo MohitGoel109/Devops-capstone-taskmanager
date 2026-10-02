@@ -1,0 +1,9 @@
+---
+- name: Docker installation
+  ansible.builtin.import_playbook: playbooks/docker-install.yml
+- name: Kubernetes installation
+  ansible.builtin.import_playbook: playbooks/kubernetes-install.yml
+- name: Application deployment
+  ansible.builtin.import_playbook: playbooks/app-deploy.yml
+- name: Configuration management
+  ansible.builtin.import_playbook: playbooks/config-management.yml

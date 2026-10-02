@@ -1,0 +1,9 @@
+---
+wsl_docker_package: docker.io
+kubernetes_cluster_name: capstone
+kubernetes_context: kind-capstone
+kubernetes_namespace: taskmanager
+kubernetes_windows_context: kind-capstone
+taskmanager_config_path: /etc/taskmanager/taskmanager.conf
+taskmanager_config_service: taskmanager-config.service
+taskmanager_app_image: taskmanager:local

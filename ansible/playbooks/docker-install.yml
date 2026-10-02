@@ -1,0 +1,22 @@
+---
+- name: Ensure local Docker is ready
+  hosts: taskmanager
+  become: true
+  tasks:
+    - name: Ensure Docker package is installed
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+        update_cache: false
+
+    - name: Ensure Docker service is enabled and running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Ensure Task Manager Docker network exists
+      community.docker.docker_network:
+        name: taskmanager
+        state: present
+      become: false

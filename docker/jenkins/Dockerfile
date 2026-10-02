@@ -8,13 +8,13 @@ RUN apt-get update && \
         ca-certificates \
         curl \
         docker.io \
+        docker-cli \
         g++ \
         git \
         python3 \
         python3-dev \
         python3-pip \
         python3-venv && \
-    ln -sf /usr/bin/docker.io /usr/bin/docker && \
     rm -rf /var/lib/apt/lists/*
 
 RUN jenkins-plugin-cli --plugins "git github pipeline-stage-view workflow-aggregator junit pipeline-groovy-lib" 

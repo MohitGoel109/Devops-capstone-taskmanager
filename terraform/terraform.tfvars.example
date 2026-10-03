@@ -1,0 +1,5 @@
+kubeconfig_path = "C:/Users/Lenovo/.kube/config"
+kube_context    = "kind-capstone"
+namespace       = "taskmanager-tf"
+app_replicas    = 2
+app_image       = "taskmanager:local"

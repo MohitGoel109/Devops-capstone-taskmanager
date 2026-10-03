@@ -66,6 +66,8 @@ kind: Service
 metadata:
   name: taskmanager
   namespace: taskmanager
+  labels:
+    app: taskmanager
 spec:
   type: NodePort
   selector:

@@ -1,5 +1,3 @@
-import os
-
 from app.app import create_app, db
 
 
@@ -71,3 +69,33 @@ def test_not_found_handler():
     response = client.get("/definitely-missing-page")
     assert response.status_code == 404
     assert b"404" in response.data
+
+
+def test_default_priority():
+    client = build_app().test_client()
+    client.post("/register", data={"username": "dan", "password": "pw"})
+    client.post("/tasks/create", data={"title": "Plain"})
+    assert client.get("/api/tasks").get_json()[0]["priority"] == "Medium"
+
+
+def test_set_high_priority():
+    client = build_app().test_client()
+    client.post("/register", data={"username": "eve", "password": "pw"})
+    client.post("/tasks/create", data={"title": "Urgent", "priority": "High"})
+    assert client.get("/api/tasks").get_json()[0]["priority"] == "High"
+
+
+def test_invalid_priority_rejected_by_api():
+    client = build_app().test_client()
+    client.post("/register", data={"username": "fay", "password": "pw"})
+    response = client.post("/api/tasks", json={"title": "Bad", "priority": "Urgent"})
+    assert response.status_code == 400
+
+
+def test_complete_toggle_keeps_priority():
+    client = build_app().test_client()
+    client.post("/register", data={"username": "gus", "password": "pw"})
+    client.post("/tasks/create", data={"title": "Keep", "priority": "High"})
+    task_id = client.get("/api/tasks").get_json()[0]["id"]
+    client.post(f"/tasks/{task_id}/update", data={"title": "Keep", "description": "", "completed": "on"})
+    assert client.get(f"/api/tasks/{task_id}").get_json()["priority"] == "High"

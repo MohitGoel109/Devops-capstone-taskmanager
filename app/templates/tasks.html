@@ -41,6 +41,14 @@
           <label for="new-task-description" class="form-label">Description <span class="optional-label">Optional</span></label>
           <input type="text" class="form-control" name="description" id="new-task-description" placeholder="Add a detail or intention">
         </div>
+        <div>
+          <label for="new-task-priority" class="form-label">Priority</label>
+          <select class="form-select" name="priority" id="new-task-priority">
+            <option value="High">High</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
         <button class="btn btn-primary add-task-button" type="submit">
           <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Add Mission
         </button>
@@ -66,6 +74,7 @@
               <i class="bi {% if task.completed %}bi-check-circle-fill{% else %}bi-hourglass-split{% endif %}" aria-hidden="true"></i>
               {% if task.completed %}Done <span lang="ja">完了</span>{% else %}Pending{% endif %}
             </span>
+            <span class="badge task-priority priority-{{ task.priority|lower }}">{{ task.priority }}</span>
           </div>
           {% if task.description %}<p class="task-description">{{ task.description }}</p>{% endif %}
           <time class="task-date" datetime="{{ task.created_at.isoformat() }}">
@@ -90,6 +99,12 @@
               <input type="text" class="form-control mb-3" name="title" id="task-title-{{ task.id }}" value="{{ task.title }}" required>
               <label class="form-label" for="task-description-{{ task.id }}">Description</label>
               <textarea class="form-control mb-3" name="description" id="task-description-{{ task.id }}" rows="2">{{ task.description or '' }}</textarea>
+              <label class="form-label" for="task-priority-{{ task.id }}">Priority</label>
+              <select class="form-select mb-3" name="priority" id="task-priority-{{ task.id }}">
+                {% for p in ['High', 'Medium', 'Low'] %}
+                <option value="{{ p }}" {% if task.priority == p %}selected{% endif %}>{{ p }}</option>
+                {% endfor %}
+              </select>
               <label class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" name="completed" {% if task.completed %}checked{% endif %}>
                 <span class="form-check-label">Done</span>

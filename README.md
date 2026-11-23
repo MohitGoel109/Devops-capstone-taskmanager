@@ -3,7 +3,9 @@
 End-to-end DevOps pipeline for deploying a cloud-native Task Manager application.
 
 ## Tools
-Git, GitHub, Jenkins, Docker, Kubernetes, Ansible, Terraform, Prometheus, Grafana, ArgoCD
+Git
+GitHub 
+Jenkins, Docker, Kubernetes, Ansible, Terraform, Prometheus, Grafana, ArgoCD
 
 ## Folder Structure
 - app/ : application source code

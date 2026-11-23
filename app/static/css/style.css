@@ -1904,3 +1904,53 @@ body {
 .priority-medium { color: #c9a24b; border-color: #c9a24b; }
 .priority-low { color: #5fb98a; border-color: #3f8f66; }
 .add-task-fields { flex-wrap: wrap; }
+/* ---- Add Mission form: clean stacked layout ---- */
+.add-task-card .add-task-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.add-task-card .add-task-fields > div {
+  min-width: 0;
+  width: 100%;
+}
+
+.add-task-card .form-control,
+.add-task-card .form-select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+}
+
+.add-task-card .form-label {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.add-task-card .add-task-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  white-space: nowrap;
+}
+
+/* Title and priority side by side on wide screens, description full width */
+@media (min-width: 992px) {
+  .add-task-card .add-task-fields {
+    grid-template-columns: 2fr 1fr;
+  }
+  .add-task-card .add-task-fields > div:nth-child(2),
+  .add-task-card .add-task-button {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Give the form card more room next to the mission list */
+@media (min-width: 992px) {
+  .mission-workspace {
+    grid-template-columns: minmax(380px, 440px) 1fr;
+    gap: 1.5rem;
+  }
+}
